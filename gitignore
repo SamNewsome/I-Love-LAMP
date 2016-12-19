@@ -1,0 +1,9 @@
+#Ignore all big files
+shared_master/installation_files/*
+shared_master/modules/*/files/atlassian-bamboo-5.13.2.tar.gz
+shared_master/modules/*/files/java.tar.gz
+shared_master/modules/*/files/jenkins_2.1_all.deb
+shared_master/modules/*/files/jira.bin
+shared_master/modules/*/files/maven.tar.gz
+shared_master/modules/*/files/mysql-serrver_5.7.15-1ubuntu14.04_amd64.deb-bundle.tar
+shared_master/modules/*/files/nexus-3.0.2-02-unix.tar.gz
