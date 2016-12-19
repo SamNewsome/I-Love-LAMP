@@ -15,11 +15,3 @@ node 'nexusAgent.qac.local' {
 node 'jiraAgent.qac.local' {
 	include jira
 }
-
-node 'bambooAgent.qac.local' {
-	include bamboo
-}
-
-node 'mysqlAgent.qac.local' {
-	include mysql
-}
