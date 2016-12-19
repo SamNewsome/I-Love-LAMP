@@ -2,7 +2,7 @@
 # vi: set ft=ruby :
 
 masterIP = "192.168.1.153"
-masterFQDN = "cilitMaster"
+masterFQDN = "SupremeLeader"
 
 Vagrant.configure("2") do |config|
 
