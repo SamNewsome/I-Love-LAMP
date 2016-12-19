@@ -1,6 +1,21 @@
-# I-Love-LAMP
-Brick killed a guy.
+# Cilit-Bang
 
-“I’m Brick Tamland. People seem to like me because I am polite and I am rarely late. I like to eat ice cream and I really enjoy a nice pair of slacks. Years later, a doctor will tell me that I have an I.Q. of 48 and am what some people call mentally retarded.”
+Jira HTTP Port: 8081
+Jira RMI Port: 8006
 
-“Brick was a great man and I will miss him so much and I will not rest until I find his killer. It’s hard for me to believe that he is gone. [cries] I feel like I just saw him yesterday. When I got the news I didn’t even know how to make sense out of it. Why?! Why?! Why did you take him from us?! BRICK IS DEAD!”
+Once Bamboo is up and running the Port is: http://localhost:8085/
+
+Nexus has to run on port 8081, cannot get to work with changed port
+
+To run the master and the agents, the master vagrant files and master bootstrap.sh can be used. They can also be modified for the users own preferences such as how many agents are being used and what modules they will initiate (to share to load). It is also possible to change the ram of each agent
+
+1.	download github repository 
+2.	move all binary files to shared_master/installation_files
+3.	then open gitbash in the directory and "vagrant up" to run all virtual machines;
+  a.	use "vagrant up 'agentname'" to run a specific machine
+4.	to test that;
+  a.	jira - type 'localhost:8081' in browser
+  b.	bamboo - type 'localhost:8085' in browser
+  c.	nexus - type 'localhost:8081' in browser
+  d.	MySQL - type 'localhost:3306' in browser
+  e.	jenkins - type 'localhost:8080' in browser
