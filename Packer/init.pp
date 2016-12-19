@@ -19,7 +19,7 @@ mode => 755,
 
 exec { 'extract packer':
 cwd => '/opt/',
-command => "sudo tar zxvf ${packer_archive}",
+command => "sudo unzip ${packer_archive}",
 require => File["/opt/${packer_archive}"]
 }
 
