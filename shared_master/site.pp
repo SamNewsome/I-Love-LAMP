@@ -17,5 +17,5 @@ node 'jiraAgent.qac.local' {
 }
 
 node 'tomcatAgent.qac.local'{
-	include tomcatAgent
+	include tomcat
 }
