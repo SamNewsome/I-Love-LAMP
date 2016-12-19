@@ -1,0 +1,13 @@
+#!/bin/bash
+ 
+ #From https://groups.google.com/forum/#!msg/puppet-users/AFTB-xEvIhk/5GST9xgFQMsJ
+ 
+HOST=$1
+CUSTOM_ATTR=$(openssl req -noout -text -in "/var/lib/puppet/ssl/ca/requests/$HOST.pem" | grep "challengePassword" | awk -F ":" '{print$2}')
+ 
+if [[ "$CUSTOM_ATTR" == "foo" ]]
+then
+   exit 0
+else
+   exit 1
+fi
