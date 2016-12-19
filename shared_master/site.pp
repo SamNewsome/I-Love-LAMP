@@ -15,3 +15,7 @@ node 'nexusAgent.qac.local' {
 node 'jiraAgent.qac.local' {
 	include jira
 }
+
+node 'tomcatAgent.qac.local'{
+	include tomcatAgent
+}
