@@ -1,4 +1,4 @@
-# Cilit-Bang
+# iLove LAMP
 
 Jira HTTP Port: 8081
 Jira RMI Port: 8006
