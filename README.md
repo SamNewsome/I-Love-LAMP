@@ -15,7 +15,5 @@ To run the master and the agents, the master vagrant files and master bootstrap.
   a.	use "vagrant up 'agentname'" to run a specific machine
 4.	to test that;
   a.	jira - type 'localhost:8081' in browser
-  b.	bamboo - type 'localhost:8085' in browser
   c.	nexus - type 'localhost:8081' in browser
-  d.	MySQL - type 'localhost:3306' in browser
   e.	jenkins - type 'localhost:8080' in browser
