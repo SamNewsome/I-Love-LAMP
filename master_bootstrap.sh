@@ -24,6 +24,10 @@ sudo cp /tmp/shared/installation_files/maven.tar.gz /usr/share/puppet/modules/ma
 #sudo cp /tmp/shared/installation_files/mysql-serrver_5.7.15-1ubuntu14.04_amd64.deb-bundle.tar /usr/share/puppet/modules/mysql/files/
 sudo cp /tmp/shared/installation_files/nexus-3.0.2-02-unix.tar.gz /usr/share/puppet/modules/nexus/files/
 sudo cp /tmp/shared/installation_files/packer_0.12.1_linux_amd64.zip /usr/share/puppet/modules/packer/files/
+sudo cp /tmp/shared/installation_files/apache-tomcat-7.0.73.tar.gz /usr/share/puppet/modules/tomcat/files/
+
+sudo cp /tmp/shared/installation_files/daq-2.0.6.tar.gz /usr/share/puppet/modules/tomcat/files/
+sudo cp /tmp/shared/installation_files/snort-2.9.9.0.tar.gz /usr/share/puppet/modules/tomcat/files/
 
 sudo cp -r /usr/share/puppet/modules/ /etc/puppet/
 #Setup secure autosigning
