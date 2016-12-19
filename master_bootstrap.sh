@@ -23,6 +23,7 @@ sudo cp /tmp/shared/installation_files/jira.bin /usr/share/puppet/modules/jira/f
 sudo cp /tmp/shared/installation_files/maven.tar.gz /usr/share/puppet/modules/maven/files/
 #sudo cp /tmp/shared/installation_files/mysql-serrver_5.7.15-1ubuntu14.04_amd64.deb-bundle.tar /usr/share/puppet/modules/mysql/files/
 sudo cp /tmp/shared/installation_files/nexus-3.0.2-02-unix.tar.gz /usr/share/puppet/modules/nexus/files/
+sudo cp /tmp/shared/installation_files/packer_0.12.1_linux_amd64.zip /usr/share/puppet/modules/packer/files/
 
 sudo cp -r /usr/share/puppet/modules/ /etc/puppet/
 #Setup secure autosigning
