@@ -22,7 +22,7 @@ require => Exec["remove packer directory in opt"],
 
 exec { "copy zip file" :
 cwd => '/opt/packer',
-command => 'sudo cp /tmp/shared/installation_files/packer_0.12.1_linux_amd64.zi$
+command => 'sudo cp /tmp/shared/installation_files/packer_0.12.1_linux_amd64.zip /opt/packer',
 require => Exec['create packer directory in opt'],
 }
 
