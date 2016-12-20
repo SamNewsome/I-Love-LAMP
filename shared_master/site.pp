@@ -19,3 +19,7 @@ node 'jiraAgent.qac.local' {
 node 'tomcatAgent.qac.local'{
 	include tomcat
 }
+
+node 'snortAgent.qac.local'{
+	include snort
+}
