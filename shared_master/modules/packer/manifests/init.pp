@@ -10,6 +10,10 @@ Exec {
 path => ['/usr/bin', '/usr/sbin', '/bin'],
 }
 
+exec { "remove packer directory in opt" :
+command => "sudo rm -r /opt/packer",
+}
+
 exec { "create packer directory in opt" :
 cwd => '/opt/',
 command => "sudo mkdir packer",
@@ -33,6 +37,11 @@ cwd => '/opt/packer/',
 command => "sudo unzip packer_0.12.1_linux_amd64.zip",
 require => Exec['copy zip file'],
 #require => File["/opt/packer/packer_0.12.1_linux_amd64.zip"]
+}
+
+exec { "write to bashrc" :
+command => 'sudo echo export PATH=$PATH:/opt/packer >> ~/.bashrc',
+require => Exec["extract packer"]
 }
 
 }
