@@ -31,7 +31,7 @@ Vagrant.configure("2") do |config|
 		#{ :hostname => 'bambooAgent.qac.local',	:ip => '192.168.1.24', 	:ram => 2048},
 		#{ :hostname => 'mysqlAgent.qac.local',	:ip => '192.168.1.25', 	:ram => 2048},
 		
-		{ :hostname => 'tomcatAgent.qac.local',	:ip => '192.168.1.26', 	:ram => 2048},
+		#{ :hostname => 'tomcatAgent.qac.local',	:ip => '192.168.1.26', 	:ram => 2048},
 	]
 	
 	agent_nodes.each do |agent|
