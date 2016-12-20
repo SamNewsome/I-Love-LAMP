@@ -1,1 +1,1 @@
-Puppet Instance IP: 52.214.115.88
+Puppet Instance IP: 52.211.213.84
