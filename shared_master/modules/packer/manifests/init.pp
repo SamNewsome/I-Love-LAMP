@@ -17,7 +17,6 @@ command => "sudo rm -r /opt/packer",
 exec { "create packer directory in opt" :
 cwd => '/opt/',
 command => "sudo mkdir packer",
-require => Exec["remove packer directory in opt"],
 }
 
 exec { "copy zip file" :
