@@ -57,7 +57,7 @@ before => Exec['path_app'],
 exec { 'path_app' :
 cwd => '/opt/packer/',
 command => "sudo bash -c '/opt/packer/setpath.sh'",
-require => Exec['shell_perm']
+require => Exec['shell_perm'],
 before => Exec['load_path'],
 }
 
