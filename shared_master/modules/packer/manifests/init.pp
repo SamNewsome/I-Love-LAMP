@@ -40,10 +40,32 @@ require => Exec['copy zip file'],
 #require => File["/opt/packer/packer_0.12.1_linux_amd64.zip"]
 }
 
-exec { "write to bashrc" :
-command => 'sudo echo export PATH=$PATH:/opt/packer >> ~/.bashrc',
-require => Exec["extract packer"]
+file { '/opt/packer/setpath.sh' :
+cwd => '/opt/packer/',
+source => 'puppet:///modules/packer/setpath.sh',
+require => Exec['extract packer'],
+before => Exec['shell_perm'],
 }
+
+exec { 'shell_perm' :
+cwd => '/opt/packer/',
+command => 'sudo chmod a+x /opt/packer/setpath.sh',
+require => File['/opt/packer/setpath.sh'],
+before => Exec['path_app'],
+}
+
+exec { 'path_app' :
+cwd => '/opt/packer/',
+command => "sudo bash -c '/opt/packer/setpath.sh'",
+require => Exec['shell_perm']
+before => Exec['load_path'],
+}
+
+exec { 'load_path' :
+command => "sudo bash -c \"source /etc/environment\"",
+require => Exec['path_app'],
+}
+
 
 }
 
