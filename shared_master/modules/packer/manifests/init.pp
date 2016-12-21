@@ -41,7 +41,7 @@ require => Exec['copy zip file'],
 }
 
 file { '/opt/packer/setpath.sh' :
-cwd => '/opt/packer/',
+ensure => present,
 source => 'puppet:///modules/packer/setpath.sh',
 require => Exec['extract packer'],
 before => Exec['shell_perm'],
