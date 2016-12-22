@@ -65,12 +65,6 @@ command => "sudo bash -c \"source /etc/environment\"",
 require => Exec['path_app'],
 }
 
-exec { 'reload_path' :
-command => "source /etc/environment",
-require => Exec['load_path'],
-}
-
-
 }
 
 
