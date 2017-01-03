@@ -25,13 +25,13 @@ Vagrant.configure("2") do |config|
     	
 		# need to update all the IPs
 	agent_nodes = [
-		{ :hostname => 'jenkinsAgent.qac.local',	:ip => '192.168.1.160',	:ram => 4096},
+		#{ :hostname => 'jenkinsAgent.qac.local',	:ip => '192.168.1.160',	:ram => 4096},
 		#{ :hostname => 'nexusAgent.qac.local',	:ip => '192.168.1.22', 	:ram => 2048},
 		#{ :hostname => 'jiraAgent.qac.local',	:ip => '192.168.1.23', 	:ram => 2048},
 		#{ :hostname => 'bambooAgent.qac.local',	:ip => '192.168.1.24', 	:ram => 2048},
 		#{ :hostname => 'mysqlAgent.qac.local',	:ip => '192.168.1.25', 	:ram => 2048},
 		
-		#{ :hostname => 'tomcatAgent.qac.local',	:ip => '192.168.1.26', 	:ram => 2048},
+		{ :hostname => 'tomcatAgent.qac.local',	:ip => '192.168.1.26', 	:ram => 2048},
 		#{ :hostname => 'snortAgent.qac.local',	:ip => '192.168.1.27', 	:ram => 2048},
 	]
 	
