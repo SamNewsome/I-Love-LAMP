@@ -1,4 +1,4 @@
-ILove AWS IP: 52.212.99.48
+ILoveLamp AWS IP: 52.212.99.48
 (For Jenkins)
 
 AcademyJosh3 AWS IP: 52.214.138.167
