@@ -1,1 +1,8 @@
-Puppet Instance IP: 52.214.115.88
+ILoveLamp AWS IP: 52.212.99.48
+(For Jenkins)
+
+AcademyJosh3 AWS IP: 52.214.138.167
+(For Jira)
+
+
+both on port 8080
