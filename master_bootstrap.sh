@@ -23,8 +23,12 @@ sudo cp /tmp/shared/installation_files/jira.bin /usr/share/puppet/modules/jira/f
 sudo cp /tmp/shared/installation_files/maven.tar.gz /usr/share/puppet/modules/maven/files/
 #sudo cp /tmp/shared/installation_files/mysql-serrver_5.7.15-1ubuntu14.04_amd64.deb-bundle.tar /usr/share/puppet/modules/mysql/files/
 sudo cp /tmp/shared/installation_files/nexus-3.0.2-02-unix.tar.gz /usr/share/puppet/modules/nexus/files/
-sudo cp /tmp/shared/installation_files/packer_0.12.1_linux_amd64.zip /usr/share/puppet/modules/packer/files/
 sudo cp /tmp/shared/installation_files/apache-tomcat-7.0.73.tar.gz /usr/share/puppet/modules/tomcat/files/
+sudo cp /tmp/shared/installation_files/packer_0.12.1_linux_amd64.zip /usr/share/puppet/modules/packer/files/
+
+sudo cp /tmp/shared/installation_files/elasticsearch-5.1.1.deb /usr/share/puppet/modules/elk/files/
+sudo cp /tmp/shared/installation_files/logstash-5.1.1.tar.gz /usr/share/puppet/modules/elk/files/
+sudo cp /tmp/shared/installation_files/kibana-5.1.1-linux-x86_64.tar.gz /usr/share/puppet/modules/elk/files/
 
 sudo cp /tmp/shared/installation_files/daq-2.0.6.tar.gz /usr/share/puppet/modules/snort/files/
 sudo cp /tmp/shared/installation_files/snort-2.9.9.0.tar.gz /usr/share/puppet/modules/snort/files/
@@ -33,6 +37,11 @@ sudo cp /tmp/shared/installation_files/community-rules.tar /usr/share/puppet/mod
 
 sudo cp /tmp/shared/snort_files/snort.conf /usr/share/puppet/modules/snort/files/
 sudo cp /tmp/shared/snort_files/snortRuleSetup.sh /usr/share/puppet/modules/snort/files/
+
+sudo cp /tmp/shared/TomCat_files/tomcat-users.xml /usr/share/puppet/modules/tomcat/files
+
+sudo cp /tmp/shared/ELK_files/kibana.yml /usr/share/puppet/modules/elk/files/
+sudo cp /tmp/shared/ELK_files/logstash.conf /usr/share/puppet/modules/elk/files/
 
 sudo cp -r /usr/share/puppet/modules/ /etc/puppet/
 #Setup secure autosigning
