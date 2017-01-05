@@ -35,6 +35,10 @@ sudo cp /tmp/shared/installation_files/snort-2.9.9.0.tar.gz /usr/share/puppet/mo
 
 sudo cp /tmp/shared/installation_files/community-rules.tar /usr/share/puppet/modules/snort/files/
 
+sudo cp /tmp/shared/installation_files/haproxy-1.7.1.tar.gz /etc/puppet/modules/haproxy/files/
+sudo cp /tmp/shared/installation_files/haproxy.cfg /etc/puppet/modules/haproxy/files/
+sudo cp /tmp/shared/installation_files/haproxy /etc/puppet/modules/haproxy/files/
+
 sudo cp /tmp/shared/snort_files/snort.conf /usr/share/puppet/modules/snort/files/
 sudo cp /tmp/shared/snort_files/snortRuleSetup.sh /usr/share/puppet/modules/snort/files/
 
