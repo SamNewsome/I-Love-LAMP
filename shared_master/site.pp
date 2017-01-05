@@ -1,6 +1,7 @@
 node default {
 	include java
 	include git
+	include haproxy
 }
 
 node 'jenkinsAgent.qac.local' {
