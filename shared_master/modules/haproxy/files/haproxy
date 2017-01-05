@@ -1,8 +1,8 @@
 #!/bin/sh
 ### BEGIN INIT INFO
 # Provides:          haproxy
-# Required-Start:    $local_fs $network $remote_fs
-# Required-Stop:     $local_fs $remote_fs
+# Required-Start:    $local_fs $network $remote_fs $syslog $named
+# Required-Stop:     $local_fs $remote_fs $syslog $named
 # Default-Start:     2 3 4 5
 # Default-Stop:      0 1 6
 # Short-Description: fast and reliable load balancing reverse proxy
@@ -10,194 +10,187 @@
 ### END INIT INFO
 
 # Author: Arnaud Cornet <acornet@debian.org>
-# Modified by: Shane Rainville <shane.rainville@serverlab.ca>
 
 PATH=/sbin:/usr/sbin:/bin:/usr/bin
 PIDFILE=/var/run/haproxy.pid
 CONFIG=/etc/haproxy/haproxy.cfg
-HAPROXY=/usr/local/sbin/haproxy
-CONFIGTEST_LOG=/var/log/haproxy_configtest.log
+HAPROXY=/usr/sbin/haproxy
+RUNDIR=/run/haproxy
 EXTRAOPTS=
-ENABLED=0
 
 test -x $HAPROXY || exit 0
-test -f "$CONFIG" || exit 0
 
 if [ -e /etc/default/haproxy ]; then
-    . /etc/default/haproxy
+        . /etc/default/haproxy
 fi
 
-test "$ENABLED" != "0" || exit 0
+test -f "$CONFIG" || exit 0
 
 [ -f /etc/default/rcS ] && . /etc/default/rcS
 . /lib/lsb/init-functions
 
 
+check_haproxy_config()
+{
+        $HAPROXY -c -f "$CONFIG" >/dev/null
+        if [ $? -eq 1 ]; then
+                log_end_msg 1
+                exit 1
+        fi
+}
+
 haproxy_start()
 {
-    start-stop-daemon --start --pidfile "$PIDFILE" \
-        --exec $HAPROXY -- -f "$CONFIG" -D -p "$PIDFILE" \
-        $EXTRAOPTS || return 2
-    return 0
+        [ -d "$RUNDIR" ] || mkdir "$RUNDIR"
+        chown haproxy:haproxy "$RUNDIR"
+        chmod 2775 "$RUNDIR"
+
+        check_haproxy_config
+
+        start-stop-daemon --quiet --oknodo --start --pidfile "$PIDFILE" \
+                --exec $HAPROXY -- -f "$CONFIG" -D -p "$PIDFILE" \
+                $EXTRAOPTS || return 2
+        return 0
 }
 
 haproxy_stop()
 {
-    if [ ! -f $PIDFILE ] ; then
-        # This is a success according to LSB
-        return 0
-    fi
-    for pid in $(cat $PIDFILE) ; do
-        /bin/kill $pid || return 4
-    done
-    rm -f $PIDFILE
-    return 0
+        if [ ! -f $PIDFILE ] ; then
+                # This is a success according to LSB
+                return 0
+        fi
+
+        ret=0
+        tmppid="$(mktemp)"
+
+        # HAProxy's pidfile may contain multiple PIDs, if nbproc > 1, so loop
+        # over each PID. Note that start-stop-daemon has a --pid option, but it
+        # was introduced in dpkg 1.17.6, post wheezy, so we use a temporary
+        # pidfile instead to ease backports.
+        for pid in $(cat $PIDFILE); do
+                echo "$pid" > "$tmppid"
+                start-stop-daemon --quiet --oknodo --stop \
+                        --retry 5 --pidfile "$tmppid" --exec $HAPROXY || ret=$?
+        done
+
+        rm -f "$tmppid"
+        [ $ret -eq 0 ] && rm -f $PIDFILE
+
+        return $ret
 }
 
 haproxy_reload()
 {
-    $HAPROXY -f "$CONFIG" -p $PIDFILE -D $EXTRAOPTS -sf $(cat $PIDFILE) \
-        || return 2
-    return 0
+        check_haproxy_config
+
+        $HAPROXY -f "$CONFIG" -p $PIDFILE -D $EXTRAOPTS -sf $(cat $PIDFILE) \
+                || return 2
+        return 0
 }
 
 haproxy_status()
 {
-    if [ ! -f $PIDFILE ] ; then
-        # program not running
-        return 3
-    fi
-
-    for pid in $(cat $PIDFILE) ; do
-        if ! ps --no-headers p "$pid" | grep haproxy > /dev/null ; then
-            # program running, bogus pidfile
-            return 1
+        if [ ! -f $PIDFILE ] ; then
+                # program not running
+                return 3
         fi
-    done
 
-    return 0
-}
+        for pid in $(cat $PIDFILE) ; do
+                if ! ps --no-headers p "$pid" | grep haproxy > /dev/null ; then
+                        # program running, bogus pidfile
+                        return 1
+                fi
+        done
 
-haproxy_configtest()
-{
-    $HAPROXY -f "$CONFIG" -c > "$CONFIGTEST_LOG" 2>&1
-    ret=$?
-    if [ $ret -eq 0 ]; then
-        # Valid config - remove $CONFIGTEST_LOG
-        rm "$CONFIGTEST_LOG"
-    fi
-
-    return $ret
+        return 0
 }
 
 
 case "$1" in
 start)
-    log_daemon_msg "Starting haproxy" "haproxy"
-    haproxy_start
-    ret=$?
-    case "$ret" in
-    0)
-        log_end_msg 0
-        ;;
-    1)
-        log_end_msg 1
-        echo "pid file '$PIDFILE' found, haproxy not started."
-        ;;
-    2)
-        log_end_msg 1
-        ;;
-    esac
-    exit $ret
-    ;;
-stop)
-    log_daemon_msg "Stopping haproxy" "haproxy"
-    haproxy_stop
-    ret=$?
-    case "$ret" in
-    0|1)
-        log_end_msg 0
-        ;;
-    2)
-        log_end_msg 1
-        ;;
-    esac
-    exit $ret
-    ;;
-reload|force-reload)
-    log_daemon_msg "Reloading haproxy" "haproxy"
-    haproxy_reload
-    case "$?" in
-    0|1)
-        log_end_msg 0
-        ;;
-    2)
-        log_end_msg 1
-        ;;
-    esac
-    ;;
-restart)
-    log_daemon_msg "Checking haproxy configuration" "haproxy"
-    haproxy_configtest
-    ret=$?
-    case "$ret" in
-    0)
-        log_end_msg 0
-        ;;
-    1)
-        log_end_msg 1
-        echo "Restart process aborted."
-        echo "Check $CONFIGTEST_LOG for details."
-        # Abort restart
+        log_daemon_msg "Starting haproxy" "haproxy"
+        haproxy_start
+        ret=$?
+        case "$ret" in
+        0)
+                log_end_msg 0
+                ;;
+        1)
+                log_end_msg 1
+                echo "pid file '$PIDFILE' found, haproxy not started."
+                ;;
+        2)
+                log_end_msg 1
+                ;;
+        esac
         exit $ret
         ;;
-    esac
-    log_daemon_msg "Restarting haproxy" "haproxy"
-    haproxy_stop
-    haproxy_start
-    case "$?" in
-    0)
-        log_end_msg 0
+stop)
+        log_daemon_msg "Stopping haproxy" "haproxy"
+        haproxy_stop
+        ret=$?
+        case "$ret" in
+        0|1)
+                log_end_msg 0
+                ;;
+        2)
+                log_end_msg 1
+                ;;
+        esac
+
+        exit $ret
         ;;
-    1)
-        log_end_msg 1
+reload|force-reload)
+        log_daemon_msg "Reloading haproxy" "haproxy"
+        haproxy_reload
+        ret=$?
+        case "$ret" in
+        0|1)
+                log_end_msg 0
+                ;;
+        2)
+                log_end_msg 1
+                ;;
+        esac
+        exit $ret
         ;;
-    2)
-        log_end_msg 1
+restart)
+        log_daemon_msg "Restarting haproxy" "haproxy"
+        haproxy_stop
+        haproxy_start
+        ret=$?
+        case "$ret" in
+        0)
+                log_end_msg 0
+                ;;
+        1)
+                log_end_msg 1
+                ;;
+        2)
+                log_end_msg 1
+                ;;
+        esac
+        exit $ret
         ;;
-    esac
-    ;;
 status)
-    haproxy_status
-    ret=$?
-    case "$ret" in
-    0)
-        echo "haproxy is running."
+        haproxy_status
+        ret=$?
+        case "$ret" in
+        0)
+                echo "haproxy is running."
+                ;;
+        1)
+                echo "haproxy dead, but $PIDFILE exists."
+                ;;
+        *)
+                echo "haproxy not running."
+                ;;
+        esac
+        exit $ret
         ;;
-    1)
-        echo "haproxy dead, but $PIDFILE exists."
-        ;;
-    *)
-        echo "haproxy not running."
-        ;;
-    esac
-    exit $ret
-    ;;
-configtest)
-    haproxy_configtest
-    ret=$?
-    case "$ret" in
-    0)
-        echo "haproxy configuration is valid."
-        ;;
-    1)
-        echo "haproxy configuration is NOT valid. Check $CONFIGTEST_LOG for details."
-        ;;
-    esac
-    exit $ret
-    ;;
 *)
-    echo "Usage: /etc/init.d/haproxy {start|stop|reload|restart|status|configtest}"
-    exit 2
-    ;;
+        echo "Usage: /etc/init.d/haproxy {start|stop|reload|restart|status}"
+        exit 2
+        ;;
 esac
+
